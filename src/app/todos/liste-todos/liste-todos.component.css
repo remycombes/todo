@@ -1,4 +1,4 @@
-#composantListeTodos{position: absolute; top: 0; left: 0; width: 100%; height: 100%; display:flex; flex-direction:row;}
+#composantListeTodos{position: absolute; top: 0; left: 0; width: 100%; height: 100%; display:flex; flex-direction:row;flex-wrap: wrap;}
 #voletGauche{flex-basis: 400px; background: lightgrey; }
 #voletDroite{flex:1; padding: 15px; }
 

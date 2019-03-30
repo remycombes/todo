@@ -1,5 +1,6 @@
 <div id="composantListeTodos">
     <div id="voletGauche">
+        {{chargement$ | async}}
         <mat-list *ngFor="let todo of todos$ | async">
             <mat-list-item [ngClass]="{effectue: todo.effectue}" class="todo">
                 <div class="titreTodo" (click)="selectionnerTodo(todo.id)">

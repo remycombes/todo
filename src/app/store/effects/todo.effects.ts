@@ -22,10 +22,19 @@ export class TodosEffects {
   ajouterTodos$ = this.actions$
     .pipe(
       ofType('[Todo details page] Add one'),
-      switchMap(
-        (action: any) => this.todosService.addTodo(action.payload) 
+      mergeMap((action: any) => this.todosService.addTodo(action.payload) 
         .pipe(
-          map(todo => ({ type: '[Todo API] Add one success', payload: todo })),
+          map(todos => ({ type: '[Todo API] Add one success'})),
+          catchError(() => EMPTY)))
+    );
+
+  @Effect()
+  ajouterTodosSuccess$ = this.actions$
+    .pipe(
+      ofType('[Todo API] Add one success'),
+      mergeMap(() => this.todosService.getTodos()
+        .pipe(
+          map(todos => ({ type: '[Todo details page] Get All'})),
           catchError(() => EMPTY)))
     );
 

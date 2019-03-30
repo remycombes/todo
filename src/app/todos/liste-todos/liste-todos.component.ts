@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Todo } from 'src/app/dto/todo.model';
 import * as actions from 'src/app/store/selectors/todo.selector';
 import { GetAll, SelectOne, UpdateOne } from 'src/app/store/actions/todos.actions';
@@ -13,10 +13,11 @@ import { MatCheckboxChange } from '@angular/material';
   templateUrl: './liste-todos.component.html',
   styleUrls: ['./liste-todos.component.css']
 })
-export class ListeTodosComponent implements OnInit {
+export class ListeTodosComponent implements OnInit, OnDestroy {
   // PROPRIETES /////////////////////////////////////////////////////////////////////////////
   public todos$: Observable<Todo[]>;
-
+  public chargement$:  Observable<boolean>; 
+  public souscriptionChargement: Subscription;
 
   // DEPENDANCES  ///////////////////////////////////////////////////////////////////////////
   constructor(
@@ -28,8 +29,12 @@ export class ListeTodosComponent implements OnInit {
   // LIFECYCLE  /////////////////////////////////////////////////////////////////////////////
   ngOnInit() {
     this.store.dispatch(new GetAll());
-    this.todos$ = this.store.select(actions.getTodos);
-    
+    this.todos$ = this.store.select(actions.getTodos);    
+    this.chargement$ = this.store.select(actions.getChargementUpdate);
+  }
+
+  ngOnDestroy(){
+    this.souscriptionChargement.unsubscribe();
   }
 
   // METHODES  //////////////////////////////////////////////////////////////////////////////

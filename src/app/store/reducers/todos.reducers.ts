@@ -18,9 +18,13 @@ const todoAdapter: EntityAdapter<Todo> = createEntityAdapter<Todo>({
 
 // STATE
 export interface TodoState extends EntityState<Todo> { 
+    chargementListe: boolean; 
+    chargementUpdate: boolean; 
     idTodoSelectionne: string | null; 
 }
 const initialState: TodoState = todoAdapter.getInitialState({
+    chargementListe: false, 
+    chargementUpdate: false, 
     idTodoSelectionne: null
 });
 
@@ -29,9 +33,9 @@ const initialState: TodoState = todoAdapter.getInitialState({
 export function todoReducer(state: TodoState = initialState, action: Action.TodosActions): TodoState {
     switch (action.type) {
         case Action.TodoActionTypes.ADD_ONE:
-            return state; 
+            return {...state,chargementUpdate: true};
         case Action.TodoActionTypes.ADD_ONE_SUCCESS:
-            return todoAdapter.addAll(action.payload, state);
+            return {...state,chargementUpdate: false};
         case Action.TodoActionTypes.SELECT_ONE:
             return {...state,idTodoSelectionne: action.payload};
         case Action.TodoActionTypes.UPDATE_ONE: 
@@ -46,10 +50,12 @@ export function todoReducer(state: TodoState = initialState, action: Action.Todo
 }
 
 // SELECTEURS
-
-let compteur: number = 1; 
 export const getIdTodoSelectionne = (state: TodoState) => {    
     return state['todos']['idTodoSelectionne'];
+};
+
+export const getChargementUpdate = (state: TodoState) => {    
+    return state.chargementUpdate;
 };
 
 const {

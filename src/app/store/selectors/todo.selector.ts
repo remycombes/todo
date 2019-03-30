@@ -12,3 +12,6 @@ export const getTodoSelectionne = createSelector(
         return todosDictionary.entities[id];
     }
 );
+
+export const getChargementUpdate = createSelector(selectTodosState, fromTodos.getChargementUpdate);
+

@@ -12,20 +12,25 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class TodosService {
+  // PROPRIETES ///////////////////////////////////////////////////////////////////////////
+  private urlTodo: string = "api/todos";   
+  private idMax: number = 6 ; /*TODO : A SUPPRIMER SI SERVEUR NON MOCKE */
 
-  private urlTodo: string = "api/todos"; 
-
+  // DEPENDANCES //////////////////////////////////////////////////////////////////////////
   constructor(private http: HttpClient) { }
 
+  // METHODES /////////////////////////////////////////////////////////////////////////////
   public getTodos(): Observable<Todo[]>{    
     return this.http.get<Todo[]>(this.urlTodo); 
   }
 
   public addTodo(todo: Todo): Observable<Todo>{
-    console.log(todo); 
+    this.idMax++; /*TODO : A SUPPRIMER SI SERVEUR NON MOCKE */
+    todo.id = ''+this.idMax; /*TODO : A SUPPRIMER SI SERVEUR NON MOCKE */
     return this.http.post<Todo>(this.urlTodo, todo, httpOptions).pipe(
       catchError(this.handleError<Todo>('ajout Todo'))
     ); 
+
   }
 
   public updateTodo(todo: Todo): Observable<Todo>{
@@ -42,8 +47,7 @@ export class TodosService {
   }
 
   private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(error);
+    return (error: any): Observable<T> => {     
       return of(result as T);
     };
   }

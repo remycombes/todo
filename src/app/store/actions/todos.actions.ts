@@ -35,7 +35,7 @@ export class SelectOne implements Action {
 
 export class AddOne implements Action {
   readonly type = TodoActionTypes.ADD_ONE;
-  constructor(public payload: Todo ) {}
+  constructor(public payload: Todo ) {console.log(payload);}
 }
 
 export class AddOneSuccess implements Action {
@@ -49,7 +49,7 @@ export class GetAll implements Action {
 }
 export class GetAllSuccess implements Action {
   readonly type = TodoActionTypes.GET_ALL_SUCCESS;
-  constructor(public payload: Todo[]) { }
+  constructor(public payload: Todo[]) {}
 }
 export type TodosActions = UpdateOne | GetAll | GetAllSuccess | SelectOne | AddOne | AddOneSuccess;
 
