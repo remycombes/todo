@@ -1,0 +1,12 @@
+<form [formGroup]="formulaireTodo" (submit)="soumettreFormulaire()" class="formulaireTodo">
+    <h3>Ajout d'une Todo</h3>
+    <mat-form-field  class="champFormulaireTodo">
+        <input formControlName="titre" matInput placeholder="Titre">
+    </mat-form-field>
+    <mat-form-field  class="champFormulaireTodo">
+        <textarea formControlName="description" matInput placeholder="Description"></textarea>
+    </mat-form-field>
+    <button mat-button color="primary" type="submit" [disabled]="!formulaireTodo.valid">Enregistrer</button>
+</form>
+
+    

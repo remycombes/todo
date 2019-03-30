@@ -1,0 +1,26 @@
+<div id="composantListeTodos">
+    <div id="voletGauche">
+        <mat-list *ngFor="let todo of todos$ | async">
+            <mat-list-item [ngClass]="{effectue: todo.effectue}" class="todo">
+                <div class="titreTodo" (click)="selectionnerTodo(todo.id)">
+                    {{todo.titre}}
+                </div>
+                <div class="cochageTodo">
+                    <mat-checkbox *ngIf="!todo.effectue" (change)="clickCheckboxEffectue(todo, $event)"></mat-checkbox>
+                </div>
+            </mat-list-item>
+        </mat-list>
+        <button mat-button color="primary" type="submit" (click)="clickBoutonAjout()">Ajouter une tache</button>
+    </div>
+    <div id="voletDroite">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+
+<!--<app-details-todo *ngIf="todoSelectionne" [todo]="todoSelectionne"></app-details-todo>-->
+
+<!--
+<hr/>
+<router-outlet></router-outlet>
+-->
