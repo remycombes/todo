@@ -17,7 +17,9 @@ export class ListeTodosComponent implements OnInit, OnDestroy {
   // PROPRIETES /////////////////////////////////////////////////////////////////////////////
   public todos$: Observable<Todo[]>;
   public chargement$:  Observable<boolean>; 
+  public todoSelectionne$: Observable<Todo>; 
   public souscriptionChargement: Subscription;
+
 
   // DEPENDANCES  ///////////////////////////////////////////////////////////////////////////
   constructor(
@@ -29,8 +31,9 @@ export class ListeTodosComponent implements OnInit, OnDestroy {
   // LIFECYCLE  /////////////////////////////////////////////////////////////////////////////
   ngOnInit() {
     this.store.dispatch(new GetAll());
-    this.todos$ = this.store.select(actions.getTodos);    
-    this.chargement$ = this.store.select(actions.getChargementUpdate);
+    this.todos$ = this.store.select(actions.getTodos);
+    this.chargement$ = this.store.select(actions.getChargementListe);
+    this.todoSelectionne$ = this.store.select(actions.getTodoSelectionnee);
   }
 
   ngOnDestroy(){
@@ -40,9 +43,9 @@ export class ListeTodosComponent implements OnInit, OnDestroy {
   // METHODES  //////////////////////////////////////////////////////////////////////////////
 
   // SELECTION TODO /////////////////////////////////////////////////////////////////////////
-  public selectionnerTodo(idTodo: string){
-    this.store.dispatch(new SelectOne(idTodo));
-    this.router.navigate(['/todos', idTodo]);
+  public selectionnerTodo(todo: Todo){
+    this.store.dispatch(new SelectOne(todo));
+    this.router.navigate(['/todos', todo.id]);
   }  
 
   // COCHAGE TODO ///////////////////////////////////////////////////////////////////////////

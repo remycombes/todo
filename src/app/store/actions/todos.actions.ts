@@ -16,8 +16,7 @@ export enum TodoActionTypes{
   ADD_ONE_FAILURE = '[Todo API] Add one failure',
 
   SELECT_ONE = '[Todo details page] Select one', 
-  SELECT_ONE_SUCCESS = '[Todo API] Select one success', 
-  SELECT_ONE_FAILURE = '[Todo API] Select one failure'
+  DESELECT_ONE = '[Todo details page] Deselect one',
 } 
 
 export class UpdateOne implements Action {
@@ -30,7 +29,11 @@ export class UpdateOne implements Action {
 
 export class SelectOne implements Action {
   readonly type = TodoActionTypes.SELECT_ONE;
-  constructor(public payload: string ) {}
+  constructor(public payload: Todo ) {}
+}
+
+export class DeselectOne implements Action {
+  readonly type = TodoActionTypes.DESELECT_ONE;
 }
 
 export class AddOne implements Action {
@@ -51,40 +54,4 @@ export class GetAllSuccess implements Action {
   readonly type = TodoActionTypes.GET_ALL_SUCCESS;
   constructor(public payload: Todo[]) {}
 }
-export type TodosActions = UpdateOne | GetAll | GetAllSuccess | SelectOne | AddOne | AddOneSuccess;
-
-
-
-/*
-// Actions relatives à la récupération de la liste des todos
-export class GetTodosAction implements Action {
-  readonly type = TodoActionTypes.GET_TODO;
-  constructor(){}
-} 
-export class GetTodosSuccessAction implements Action {
-  readonly type = TodoActionTypes.GET_TODO_SUCCESS;
-  constructor(public payload: Todo[]){}
-}
-export class GetTodosFailedAction implements Action {
-  readonly type = TodoActionTypes.GET_TODO_FAILURE;
-  constructor(public payload: string){}
-}
-
-// Actions relatives à la mise à jour d'un todo
-export class UpdateTodoAction implements Action {
-  readonly type = TodoActionTypes.UPDATE_TODO;
-  constructor(public payload: Todo){}
-} 
-export class UpdateTodoSuccessAction implements Action {
-  readonly type = TodoActionTypes.UPDATE_TODO_SUCCESS;
-  constructor(public payload: Todo[]){}
-}
-export class UpdateTodoFailureAction implements Action {
-  readonly type = TodoActionTypes.UPDATE_TODO_FAILURE;
-  constructor(public payload: string){}
-}
-
-export type ActionsUnion = 
-  GetTodosAction | GetTodosSuccessAction | GetTodosFailedAction | 
-  UpdateTodoAction | UpdateTodoSuccessAction | UpdateTodoFailureAction; 
-*/
+export type TodosActions = UpdateOne | GetAll | GetAllSuccess | SelectOne | AddOne | AddOneSuccess | DeselectOne;

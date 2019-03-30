@@ -1,11 +1,16 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Todo } from 'src/app/dto/todo.model';
 import { Store } from '@ngrx/store';
 import { TodoState } from 'src/app/store/reducers/todos.reducers';
 import * as actions from 'src/app/store/selectors/todo.selector';
 import { ActivatedRoute } from '@angular/router';
-import { SelectOne } from 'src/app/store/actions/todos.actions';
+
+/*
+  DETAILS DU TODO
+  Affiche le todo sélectionné du state
+  Récupère également l'url à l'initialisation 
+*/
 
 @Component({
   selector: 'app-details-todo',
@@ -14,10 +19,10 @@ import { SelectOne } from 'src/app/store/actions/todos.actions';
 })
 export class DetailsTodoComponent implements OnInit {
   // PROPRIETES /////////////////////////////////////////////////////////////////////////////
-  public todo: Todo; 
+  public todo$: Observable<Todo>;
+  public souscriptionsParametresRoute: Subscription; 
 
   // DEPENDANCES ////////////////////////////////////////////////////////////////////////////
-
   constructor(
     private store: Store<TodoState>, 
     private route: ActivatedRoute
@@ -25,13 +30,22 @@ export class DetailsTodoComponent implements OnInit {
 
   // LIFECYCLE //////////////////////////////////////////////////////////////////////////////
   ngOnInit() {
-    let idUrl = this.route.snapshot.paramMap.get("id"); // Récupérer l'id de l'url
-    if (idUrl) this.store.dispatch(new SelectOne(idUrl)); // dispatcher la selection du todo
-    this.store.select(actions.getTodoSelectionne).subscribe(
-      (todo)=>{this.todo = todo; }, 
-      (error)=>{console.log(error);}
+    this.todo$ = this.store.select(actions.getTodoSelectionnee);     
+    /*
+    this.souscriptionsParametresRoute =  this.route.paramMap.subscribe(
+      (data)=>{
+        this.todo$ = this.store.select(actions.getTodo, {id: ''+data.get("id")});     
+        console.log(data.get("id"))
+      }, 
+      (error)=>{
+        console.log(error)
+      }
     );
-    
+    */
+  }
+  
+  ngOnDestroy(){
+    // this.souscriptionsParametresRoute.unsubscribe();
   }
   
 
