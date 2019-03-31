@@ -7,6 +7,7 @@ import { GetAll, SelectOne, UpdateOne } from 'src/app/store/actions/todos.action
 import { TodoState } from 'src/app/store/reducers/todos.reducers';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatCheckboxChange } from '@angular/material';
+import { TodosService } from 'src/app/services/todos.service';
 
 /*
   LISTE DES TODOS
@@ -30,7 +31,9 @@ export class ListeTodosComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<TodoState>, 
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router, 
+    private service: TodosService
+
     ) { }
 
   // LIFECYCLE  /////////////////////////////////////////////////////////////////////////////
@@ -56,7 +59,15 @@ export class ListeTodosComponent implements OnInit, OnDestroy {
 
   // COCHAGE TODO ///////////////////////////////////////////////////////////////////////////
   public clickCheckboxEffectue(todo: Todo, valeur: MatCheckboxChange){
-    this.store.dispatch(new UpdateOne(todo.id, {effectue: valeur.checked}));
+    todo.effectue=true; 
+    /*
+    this.service.updateTodo(todo).subscribe(
+      (data)=>{console.log(data)}, 
+      (error)=>{console.log(error)} 
+    );
+    */
+    
+    this.store.dispatch(new UpdateOne(todo));
   }
 
   // NAVIGATION /////////////////////////////////////////////////////////////////////////////

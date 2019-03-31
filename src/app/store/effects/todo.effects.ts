@@ -3,6 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { EMPTY } from 'rxjs';
 import { map, mergeMap, catchError, switchMap } from 'rxjs/operators';
 import { TodosService } from 'src/app/services/todos.service';
+import { UpdateOne } from '../actions/todos.actions';
  
 @Injectable()
 export class TodosEffects {
@@ -36,6 +37,27 @@ export class TodosEffects {
           map(todos => ({ type: '[Todo details page] Get All'})),
           catchError(() => EMPTY)))
     );
+
+  @Effect()
+  majTodos$ = this.actions$
+    .pipe(
+      ofType('[Todo details page] Update one'),
+      mergeMap((action: UpdateOne) => this.todosService.updateTodo(action.payload)
+        .pipe(
+          map((todo) => ({ type: '[Todo API] Update one success'})),
+          catchError(() => EMPTY)))
+    );
+
+  @Effect()
+  majTodoSuccess$ = this.actions$
+    .pipe(
+      ofType('[Todo API] Update one success'),
+      mergeMap(() => this.todosService.getTodos()
+        .pipe(
+          map(todos => ({ type: '[Todo details page] Get All'})),
+          catchError(() => EMPTY)))
+    );
+      
  
   constructor(
     private actions$: Actions,

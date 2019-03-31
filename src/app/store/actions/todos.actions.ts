@@ -11,7 +11,7 @@ export enum TodoActionTypes{
   // GET_ALL_FAILURE = '[Todo API] Get All failure',
 
   UPDATE_ONE = '[Todo details page] Update one', 
-  // UPDATE_ONE_SUCCESS = '[Todo API] Update one success', 
+  UPDATE_ONE_SUCCESS = '[Todo API] Update one success', 
   // UPDATE_ONE_FAILURE = '[Todo API] Update one failure', 
 
   ADD_ONE = '[Todo details page] Add one', 
@@ -38,12 +38,17 @@ export class GetAllSuccess implements Action {
 // MISE A JOUR //////////////////////////////////////////////////////////////////////
 export class UpdateOne implements Action {
   readonly type = TodoActionTypes.UPDATE_ONE;
-  constructor( public id: string, public modifications: Partial<Todo>) { }}
+  constructor( public payload: Todo) {}}
+
+export class UpdateOneSuccess implements Action {
+  readonly type = TodoActionTypes.UPDATE_ONE_SUCCESS;
+  constructor( public payload: Todo) { console.log('updateonesuccess', payload); }}
+  
 
 // AJOUT //////////////////////////////////////////////////////////////////////
 export class AddOne implements Action {
   readonly type = TodoActionTypes.ADD_ONE;
-  constructor(public payload: Todo ) {console.log(payload);} }
+  constructor(public payload: Todo ) {} }
 
 export class AddOneSuccess implements Action {
   readonly type = TodoActionTypes.ADD_ONE_SUCCESS;
@@ -53,5 +58,5 @@ export class AddOneSuccess implements Action {
 export type TodosActions = 
   SelectOne | DeselectOne |
   GetAll | GetAllSuccess | 
-  UpdateOne |   
+  UpdateOne | UpdateOneSuccess | 
   AddOne | AddOneSuccess  ;

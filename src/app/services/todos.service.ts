@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, map} from 'rxjs/operators';
+import { catchError, map, mergeMap} from 'rxjs/operators';
 import { Todo } from '../dto/todo.model';
 
 const httpOptions = {
@@ -22,21 +22,18 @@ export class TodosService {
   // METHODES /////////////////////////////////////////////////////////////////////////////
   public getTodos(): Observable<Todo[]>{    
     return this.http.get<Todo[]>(this.urlTodo); 
-  }
+  } 
 
   public addTodo(todo: Todo): Observable<Todo>{
     this.idMax++; /*TODO : A SUPPRIMER SI SERVEUR NON MOCKE */
-    todo.id = ''+this.idMax; /*TODO : A SUPPRIMER SI SERVEUR NON MOCKE */
+    todo.id = this.idMax; /*TODO : A SUPPRIMER SI SERVEUR NON MOCKE */
     return this.http.post<Todo>(this.urlTodo, todo, httpOptions).pipe(
       catchError(this.handleError<Todo>('ajout Todo'))
     ); 
-
   }
 
   public updateTodo(todo: Todo): Observable<Todo>{
-    return this.http.put<Todo>(this.urlTodo, todo, httpOptions).pipe(
-      catchError(this.handleError<Todo>('ajout Todo'))
-    ); 
+    return this.http.put<Todo>(this.urlTodo + '/' + todo.id, todo, httpOptions); 
   }
 
   public deleteTodo (todo: Todo | number): Observable<Todo> {

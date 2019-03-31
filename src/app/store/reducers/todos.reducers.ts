@@ -7,7 +7,7 @@ import { Todo } from '../../dto/todo.model';
 function trierSelonEtatEtId(a: Todo, b: Todo): number {
     let etatA: string  = a.effectue ? '1' : '0'; 
     let etatB: string = b.effectue ? '1' : '0'; 
-    return etatA.localeCompare(etatB) || b.id.localeCompare(a.id); 
+    return etatA.localeCompare(etatB) ; 
 
 }
 // ADAPTEUR DES TODOS
@@ -46,7 +46,12 @@ export function todoReducer(state: TodoState = initialState, action: Action.Todo
 
         // MISES A JOUR
         case Action.TodoActionTypes.UPDATE_ONE: 
-            return todoAdapter.updateOne({id: action.id, changes: action.modifications}, state);
+            return {...state, chargementListe: true};
+            // return todoAdapter.updateOne({id: action.idTodo, changes: action.modifications}, state);
+        case Action.TodoActionTypes.UPDATE_ONE_SUCCESS: 
+            return {...state, chargementListe: true};
+            // return todoAdapter.updateOne({id: action.idTodo, changes: action.modifications}, state);
+            // return {...state,chargementUpdate: false};
 
         // AJOUT
         case Action.TodoActionTypes.ADD_ONE:
