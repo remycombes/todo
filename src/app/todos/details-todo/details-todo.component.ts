@@ -9,7 +9,6 @@ import { ActivatedRoute } from '@angular/router';
 /*
   DETAILS DU TODO
   Affiche le todo sélectionné du state
-  Récupère également l'url à l'initialisation 
 */
 
 @Component({
@@ -30,25 +29,15 @@ export class DetailsTodoComponent implements OnInit {
 
   // LIFECYCLE //////////////////////////////////////////////////////////////////////////////
   ngOnInit() {
-    this.todo$ = this.store.select(actions.getTodoSelectionnee);     
-    /*
+    this.todo$ = this.store.select(actions.getTodoSelectionnee);    
     this.souscriptionsParametresRoute =  this.route.paramMap.subscribe(
-      (data)=>{
-        this.todo$ = this.store.select(actions.getTodo, {id: ''+data.get("id")});     
-        console.log(data.get("id"))
-      }, 
-      (error)=>{
-        console.log(error)
-      }
-    );
-    */
+      (data)=>{this.todo$ = this.store.select(actions.getTodo, {id: ''+data.get("id")});}, 
+      (error)=>{console.log(error)});
   }
   
   ngOnDestroy(){
-    // this.souscriptionsParametresRoute.unsubscribe();
+    this.souscriptionsParametresRoute.unsubscribe();
   }
-  
-
   // METHODES ///////////////////////////////////////////////////////////////////////////////
 
 }

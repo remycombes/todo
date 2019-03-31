@@ -10,7 +10,7 @@ function trierSelonEtatEtId(a: Todo, b: Todo): number {
     return etatA.localeCompare(etatB) || b.id.localeCompare(a.id); 
 
 }
-// ADAPTEUR
+// ADAPTEUR DES TODOS
 const todoAdapter: EntityAdapter<Todo> = createEntityAdapter<Todo>({
     sortComparer: trierSelonEtatEtId
 });
@@ -25,49 +25,52 @@ export interface TodoState extends EntityState<Todo> {
 const initialState: TodoState = todoAdapter.getInitialState({
     chargementListe: false, 
     chargementUpdate: false, 
-    // idTodoSelectionne: "0", 
+    // idTodoSelectionne: null, 
     todoSelectionne: null
 });
 
 // REDUCER
 export function todoReducer(state: TodoState = initialState, action: Action.TodosActions): TodoState {
     switch (action.type) {
-        case Action.TodoActionTypes.ADD_ONE:
-            return {...state,chargementUpdate: true};
-        case Action.TodoActionTypes.ADD_ONE_SUCCESS:
-            return {...state,chargementUpdate: false};
+        // SELECTIONS
         case Action.TodoActionTypes.SELECT_ONE:
             return {...state,todoSelectionne: action.payload};
         case Action.TodoActionTypes.DESELECT_ONE:
             return {...state,todoSelectionne: null};
-        case Action.TodoActionTypes.UPDATE_ONE: 
-            return todoAdapter.updateOne({id: action.id,changes: action.changes}, state);
+
+        // RECUPERATIONS
         case Action.TodoActionTypes.GET_ALL:
             return {...state, chargementListe: true};
         case Action.TodoActionTypes.GET_ALL_SUCCESS:
             return todoAdapter.addAll(action.payload, {...state, chargementListe: false});
+
+        // MISES A JOUR
+        case Action.TodoActionTypes.UPDATE_ONE: 
+            return todoAdapter.updateOne({id: action.id, changes: action.modifications}, state);
+
+        // AJOUT
+        case Action.TodoActionTypes.ADD_ONE:
+            return {...state,chargementUpdate: true};
+        case Action.TodoActionTypes.ADD_ONE_SUCCESS:
+            return {...state,chargementUpdate: false};
+
+        // DEFAUT
         default:
             return state;
     }
 }
 
-// SELECTEURS
-export const getIdTodoSelectionne = (state: TodoState = initialState) => {    
-    return state['todos']['idTodoSelectionne'];
-};
-
+// Récupération d'éléments du state
 export const getTodoSelectionne = (state: TodoState = initialState) => {    
-    return state.todoSelectionne;
-};
+    return state.todoSelectionne;};
 
 export const getChargementUpdate = (state: TodoState) => {    
-    return state.chargementUpdate;
-};
+    return state.chargementUpdate;};
 
 export const getChargementListe = (state: TodoState) => {    
-    return state.chargementListe;
-};
+    return state.chargementListe;};
 
+// Sélecteurs issus de l'adapteur
 const {
     selectAll, 
     selectIds, 

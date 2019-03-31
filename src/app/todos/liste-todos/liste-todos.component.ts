@@ -8,6 +8,10 @@ import { TodoState } from 'src/app/store/reducers/todos.reducers';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatCheckboxChange } from '@angular/material';
 
+/*
+  LISTE DES TODOS
+  Contient un router outlet qui affiche soit le formulaire d'ajout, soit les détails du todo sélectionné
+*/
 @Component({
   selector: 'app-liste-todos',
   templateUrl: './liste-todos.component.html',
@@ -19,6 +23,7 @@ export class ListeTodosComponent implements OnInit, OnDestroy {
   public chargement$:  Observable<boolean>; 
   public todoSelectionne$: Observable<Todo>; 
   public souscriptionChargement: Subscription;
+  public souscriptionsParametresRoute: Subscription; 
 
 
   // DEPENDANCES  ///////////////////////////////////////////////////////////////////////////
@@ -38,6 +43,7 @@ export class ListeTodosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.souscriptionChargement.unsubscribe();
+    this.souscriptionsParametresRoute.unsubscribe();
   }
 
   // METHODES  //////////////////////////////////////////////////////////////////////////////

@@ -16,7 +16,6 @@ export class TodosEffects {
           map(todos => ({ type: '[Todo API] Get All success', payload: todos })),
           catchError(() => EMPTY)))
     );
-
     
   @Effect()
   ajouterTodos$ = this.actions$
@@ -24,7 +23,7 @@ export class TodosEffects {
       ofType('[Todo details page] Add one'),
       mergeMap((action: any) => this.todosService.addTodo(action.payload) 
         .pipe(
-          map(todos => ({ type: '[Todo API] Add one success'})),
+          map(() => ({ type: '[Todo API] Add one success'})),
           catchError(() => EMPTY)))
     );
 
@@ -37,8 +36,6 @@ export class TodosEffects {
           map(todos => ({ type: '[Todo details page] Get All'})),
           catchError(() => EMPTY)))
     );
-
-      
  
   constructor(
     private actions$: Actions,
