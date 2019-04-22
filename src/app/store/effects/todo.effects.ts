@@ -6,58 +6,22 @@ import { TodosService } from 'src/app/services/todos.service';
 import { UpdateOne } from '../actions/todos.actions';
  
 @Injectable()
-export class TodosEffects {
- 
-  @Effect()
-  chargerTodos$ = this.actions$
-    .pipe(
-      ofType('[Todo details page] Get All'),
-      mergeMap(() => this.todosService.getTodos()
-        .pipe(
-          map(todos => ({ type: '[Todo API] Get All success', payload: todos })),
-          catchError(() => EMPTY)))
-    );
-    
-  @Effect()
-  ajouterTodos$ = this.actions$
-    .pipe(
-      ofType('[Todo details page] Add one'),
-      mergeMap((action: any) => this.todosService.addTodo(action.payload) 
-        .pipe(
-          map(() => ({ type: '[Todo API] Add one success'})),
-          catchError(() => EMPTY)))
-    );
+export class TodosEffects {  
 
-  @Effect()
-  ajouterTodosSuccess$ = this.actions$
-    .pipe(
-      ofType('[Todo API] Add one success'),
-      mergeMap(() => this.todosService.getTodos()
-        .pipe(
-          map(todos => ({ type: '[Todo details page] Get All'})),
-          catchError(() => EMPTY)))
-    );
+  @Effect() chargerTodos$ = this.actions$.pipe( 
+    ofType('[Todo details page] Get All', '[Todo API] Add one success', '[Todo API] Update one success'),
+    mergeMap(() => this.todosService.getTodos()), 
+    map(todos => ({ type: '[Todo API] Get All success', todos: todos })));
 
-  @Effect()
-  majTodos$ = this.actions$
-    .pipe(
-      ofType('[Todo details page] Update one'),
-      mergeMap((action: UpdateOne) => this.todosService.updateTodo(action.payload)
-        .pipe(
-          map((todo) => ({ type: '[Todo API] Update one success'})),
-          catchError(() => EMPTY)))
-    );
+  @Effect() ajouterTodo$ = this.actions$.pipe( 
+    ofType('[Todo details page] Add one'),
+    mergeMap((action: any) => this.todosService.addTodo(action.todo)), 
+    map(todo => ({ type: '[Todo API] Add one success', todo: todo })));
 
-  @Effect()
-  majTodoSuccess$ = this.actions$
-    .pipe(
-      ofType('[Todo API] Update one success'),
-      mergeMap(() => this.todosService.getTodos()
-        .pipe(
-          map(todos => ({ type: '[Todo details page] Get All'})),
-          catchError(() => EMPTY)))
-    );
-      
+  @Effect() majTodo$ = this.actions$.pipe( 
+    ofType('[Todo details page] Update one'),
+    mergeMap((action: any) => this.todosService.updateTodo(action.todo)), 
+    map(todo => ({ type: '[Todo API] Update one success'})));
  
   constructor(
     private actions$: Actions,

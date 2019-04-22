@@ -12,6 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import { InMemoryTodosService } from '../services/in-memory-todos.service';
 import { TodosService } from '../services/todos.service';
 import { SharedModule } from '../shared/shared.module';
+import { todoReducer } from '../store/reducers/todos.reducers';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { SharedModule } from '../shared/shared.module';
     TodosRoutingModule, 
     ReactiveFormsModule,
     HttpClientModule,
+    StoreModule.forFeature('todos', todoReducer), 
     HttpClientInMemoryWebApiModule.forFeature(InMemoryTodosService),
   ],
   declarations: [

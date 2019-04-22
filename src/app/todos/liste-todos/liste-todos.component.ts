@@ -2,15 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { Todo } from 'src/app/dto/todo.model';
-import * as actions from 'src/app/store/selectors/todo.selector';
+import * as selecteurs from 'src/app/store/selectors/todo.selector';
 import { GetAll, SelectOne, UpdateOne } from 'src/app/store/actions/todos.actions';
 import { TodoState } from 'src/app/store/reducers/todos.reducers';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatCheckboxChange } from '@angular/material';
-import { TodosService } from 'src/app/services/todos.service';
 
 /*
   LISTE DES TODOS
+  Affiche la liste des todos présents en base.
   Contient un router outlet qui affiche soit le formulaire d'ajout, soit les détails du todo sélectionné
 */
 @Component({
@@ -31,17 +30,15 @@ export class ListeTodosComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<TodoState>, 
     private route: ActivatedRoute,
-    private router: Router, 
-    private service: TodosService
-
+    private router: Router
     ) { }
 
   // LIFECYCLE  /////////////////////////////////////////////////////////////////////////////
   ngOnInit() {
     this.store.dispatch(new GetAll());
-    this.todos$ = this.store.select(actions.getTodos);
-    this.chargement$ = this.store.select(actions.getChargementListe);
-    this.todoSelectionne$ = this.store.select(actions.getTodoSelectionnee);
+    this.todos$ = this.store.select(selecteurs.getTodos);
+    this.chargement$ = this.store.select(selecteurs.getChargement);
+    this.todoSelectionne$ = this.store.select(selecteurs.getTodoSelectionnee);
   }
 
   ngOnDestroy(){
@@ -58,16 +55,9 @@ export class ListeTodosComponent implements OnInit, OnDestroy {
   }  
 
   // COCHAGE TODO ///////////////////////////////////////////////////////////////////////////
-  public clickCheckboxEffectue(todo: Todo, valeur: MatCheckboxChange){
-    todo.effectue=true; 
-    /*
-    this.service.updateTodo(todo).subscribe(
-      (data)=>{console.log(data)}, 
-      (error)=>{console.log(error)} 
-    );
-    */
-    
-    this.store.dispatch(new UpdateOne(todo));
+  public clickCheckboxEffectue(todo: Todo){
+    todo.effectue=true;    
+    this.store.dispatch(new UpdateOne(todo.id+'', todo));
   }
 
   // NAVIGATION /////////////////////////////////////////////////////////////////////////////

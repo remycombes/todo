@@ -1,25 +1,34 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { Navigation } from 'selenium-webdriver';
 import { CoreModule } from './core/core.module';
-import { RouterModule } from '@angular/router';
+import { Component } from '@angular/core';
+
+// Stub components pour composants nestés
+@Component({selector: 'router-outlet', template: ''})
+class RouterOutletStubComponent { }
+
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  let fixture: ComponentFixture<AppComponent>;
+  let composant: any; 
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent, 
+        RouterOutletStubComponent
       ],
-      imports: [
-        CoreModule, 
-        RouterModule
-      ]
+      imports: [CoreModule]
     }).compileComponents();
-  }));
-  /*
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
-  */
+    fixture = TestBed.createComponent(AppComponent);  
+    composant = fixture.debugElement.componentInstance;
+  });
+
+  it('est créé', () => { 
+    expect(composant).toBeTruthy();
+  });
+
+  it("a comme titre 'Liste des todos'", ()=>{
+    expect(composant.titre).toEqual('Liste des todos');
+  })
+
 });

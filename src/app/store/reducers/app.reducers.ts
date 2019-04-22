@@ -1,12 +1,12 @@
 import { ActionReducerMap } from '@ngrx/store';
-import * as todosReducer from './todos.reducers';
+import { TodoState, todoReducer } from './todos.reducers';
 
-// State de notre feature
+// State global
 export interface ElementsState {
-	todos: todosReducer.TodoState;
+	todos: TodoState;
 }
 
 // Reducers pour notre state
 export const appReducers: ActionReducerMap<ElementsState> = {
-	todos: todosReducer.todoReducer
+	todos: todoReducer
 };

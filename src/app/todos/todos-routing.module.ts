@@ -5,7 +5,7 @@ import { DetailsTodoComponent } from './details-todo/details-todo.component';
 import { AjouterTodoComponent } from './ajouter-todo/ajouter-todo.component';
 import { ListeTodosComponent } from './liste-todos/liste-todos.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'todos',
     component: TodosComponent, 

@@ -1,27 +1,41 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
+import { ReactiveFormsModule } from '@angular/forms';
 
+import { SharedModule } from 'src/app/shared/shared.module';
 import { AjouterTodoComponent } from './ajouter-todo.component';
+import { of } from 'rxjs';
+
+class StoreMock {
+  select = jasmine.createSpy().and.returnValue(of(true)); 
+  dispatch = jasmine.createSpy();
+}
 
 describe('AjouterTodoComponent', () => {
-  let component: AjouterTodoComponent;
+  // DONNEES DE TEST //////////////////////////////////////////////////////////
   let fixture: ComponentFixture<AjouterTodoComponent>;
+  let composant: AjouterTodoComponent;
+  let store: Store<boolean>; 
+  
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ AjouterTodoComponent ]
-    })
-    .compileComponents();
-  }));
-
+  // CONFIGURATION ////////////////////////////////////////////////////////////
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule, 
+        SharedModule
+      ], 
+      declarations: [ AjouterTodoComponent ], 
+      providers: [{provide: Store, useClass: StoreMock}, ]
+    });
     fixture = TestBed.createComponent(AjouterTodoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    composant = fixture.componentInstance;
+    store = TestBed.get(Store); 
   });
 
-  /*
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-  */
+  // TESTS ////////////////////////////////////////////////////////////////////
+  it("est créé", ()=>{
+    expect(composant).toBeTruthy();
+  }); 
+  
 });

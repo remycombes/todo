@@ -1,4 +1,4 @@
-import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromTodos from 'src/app/store/reducers/todos.reducers';
 import { Todo } from 'src/app/dto/todo.model';
 
@@ -12,9 +12,8 @@ export const getTodo = createSelector(getTodos,(todos, propriete) => {
     for(let todo of todos){if(todo.id == propriete["id"]){todoARetourner = todo;}}
     return todoARetourner; });  
 
-// CHARGEMENTS
-export const getChargementUpdate = createSelector(selectTodosState, fromTodos.getChargementUpdate);
-export const getChargementListe = createSelector(selectTodosState, fromTodos.getChargementListe);
+// CHARGEMENT
+export const getChargement = createSelector(selectTodosState, fromTodos.getChargement);
 
 // TODO SELECTIONNEE
 export const getTodoSelectionnee = createSelector(selectTodosState, fromTodos.getTodoSelectionne);

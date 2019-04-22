@@ -6,7 +6,7 @@ import { Todo } from 'src/app/dto/todo.model';
 import { Store } from '@ngrx/store';
 import { TodoState } from 'src/app/store/reducers/todos.reducers';
 import { AddOne, GetAll } from 'src/app/store/actions/todos.actions';
-import * as actions from 'src/app/store/selectors/todo.selector';
+import * as selecteurs from 'src/app/store/selectors/todo.selector';
 
 /*
   FORMULAIRE D'AJOUT D'UN TODO
@@ -36,7 +36,7 @@ export class AjouterTodoComponent implements OnInit, OnDestroy {
   // LIFECYCLE //////////////////////////////////////////////////////////////////////////////
   ngOnInit() {
     this.resetFormulaire();
-    this.chargement$ = this.store.select(actions.getChargementUpdate);
+    this.chargement$ = this.store.select(selecteurs.getChargement);
     
     this.souscriptionChargement = this.chargement$.subscribe(  // gestion des évènements liés au chargement
       (chargement)=>{

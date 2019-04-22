@@ -1,7 +1,5 @@
 import { NgModule }              from '@angular/core';
 import { RouterModule, Routes }  from '@angular/router';
-import { AppComponent } from './app.component';
-import { TodosComponent } from './todos/todos.component';
  
 const appRoutes: Routes = [  
   {
@@ -13,10 +11,7 @@ const appRoutes: Routes = [
  
 @NgModule({
   imports: [
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: false }
-    )
+    RouterModule.forRoot(appRoutes,{ enableTracing: false })
   ],
   exports: [
     RouterModule

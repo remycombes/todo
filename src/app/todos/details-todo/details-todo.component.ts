@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Todo } from 'src/app/dto/todo.model';
 import { Store } from '@ngrx/store';
 import { TodoState } from 'src/app/store/reducers/todos.reducers';
-import * as actions from 'src/app/store/selectors/todo.selector';
+import * as selecteurs from 'src/app/store/selectors/todo.selector';
 import { ActivatedRoute } from '@angular/router';
 
 /*
@@ -20,6 +20,7 @@ export class DetailsTodoComponent implements OnInit {
   // PROPRIETES /////////////////////////////////////////////////////////////////////////////
   public todo$: Observable<Todo>;
   public souscriptionsParametresRoute: Subscription; 
+  public idTodo: number; 
 
   // DEPENDANCES ////////////////////////////////////////////////////////////////////////////
   constructor(
@@ -29,15 +30,14 @@ export class DetailsTodoComponent implements OnInit {
 
   // LIFECYCLE //////////////////////////////////////////////////////////////////////////////
   ngOnInit() {
-    this.todo$ = this.store.select(actions.getTodoSelectionnee);    
+    this.todo$ = this.store.select(selecteurs.getTodoSelectionnee);    
     this.souscriptionsParametresRoute =  this.route.paramMap.subscribe(
-      (data)=>{this.todo$ = this.store.select(actions.getTodo, {id: ''+data.get("id")});}, 
+      (param)=>{
+        this.idTodo = +param.get("id"); 
+        this.todo$ = this.store.select(selecteurs.getTodo, {id: ''+param.get("id")});}, 
       (error)=>{console.log(error)});
   }
   
-  ngOnDestroy(){
-    this.souscriptionsParametresRoute.unsubscribe();
-  }
   // METHODES ///////////////////////////////////////////////////////////////////////////////
 
 }

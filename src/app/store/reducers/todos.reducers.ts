@@ -1,86 +1,52 @@
-import * as Action from '../actions/todos.actions';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Todo } from '../../dto/todo.model';
-
+import { TypesActionsTodos, TodosActions } from '../actions/todos.actions';
 
 // FONCTION DE TRI
-function trierSelonEtatEtId(a: Todo, b: Todo): number {
+function trierSelonEtat(a: Todo, b: Todo): number {
     let etatA: string  = a.effectue ? '1' : '0'; 
     let etatB: string = b.effectue ? '1' : '0'; 
     return etatA.localeCompare(etatB) ; 
-
 }
 // ADAPTEUR DES TODOS
 const todoAdapter: EntityAdapter<Todo> = createEntityAdapter<Todo>({
-    sortComparer: trierSelonEtatEtId
+    sortComparer: trierSelonEtat
 });
 
 // STATE
 export interface TodoState extends EntityState<Todo> { 
-    chargementListe: boolean; 
-    chargementUpdate: boolean; 
-    // idTodoSelectionne: string; 
+    chargement: boolean; 
     todoSelectionne: Todo; 
 }
 const initialState: TodoState = todoAdapter.getInitialState({
-    chargementListe: false, 
-    chargementUpdate: false, 
-    // idTodoSelectionne: null, 
+    chargement: false, 
     todoSelectionne: null
 });
 
 // REDUCER
-export function todoReducer(state: TodoState = initialState, action: Action.TodosActions): TodoState {
-    switch (action.type) {
-        // SELECTIONS
-        case Action.TodoActionTypes.SELECT_ONE:
-            return {...state,todoSelectionne: action.payload};
-        case Action.TodoActionTypes.DESELECT_ONE:
-            return {...state,todoSelectionne: null};
+export function todoReducer(state: TodoState = initialState, action: TodosActions): TodoState {
+    switch (action.type) {        
+        case TypesActionsTodos.SELECT_ONE:              return {...state, todoSelectionne: action.todo};  
+        case TypesActionsTodos.DESELECT_ONE:            return {...state, todoSelectionne: null};
 
-        // RECUPERATIONS
-        case Action.TodoActionTypes.GET_ALL:
-            return {...state, chargementListe: true};
-        case Action.TodoActionTypes.GET_ALL_SUCCESS:
-            return todoAdapter.addAll(action.payload, {...state, chargementListe: false});
+        case TypesActionsTodos.GET_ALL:                 return {...state, chargement: true};
+        case TypesActionsTodos.GET_ALL_SUCCESS:         return todoAdapter.addAll(action.todos, {...state, chargement: false});
 
-        // MISES A JOUR
-        case Action.TodoActionTypes.UPDATE_ONE: 
-            return {...state, chargementListe: true};
-            // return todoAdapter.updateOne({id: action.idTodo, changes: action.modifications}, state);
-        case Action.TodoActionTypes.UPDATE_ONE_SUCCESS: 
-            return {...state, chargementListe: true};
-            // return todoAdapter.updateOne({id: action.idTodo, changes: action.modifications}, state);
-            // return {...state,chargementUpdate: false};
+        case TypesActionsTodos.UPDATE_ONE:              return {...state, chargement: true};
+        case TypesActionsTodos.UPDATE_ONE_SUCCESS:      return todoAdapter.updateOne({id: action.id, changes: action.todo}, {...state, chargement: true});
 
-        // AJOUT
-        case Action.TodoActionTypes.ADD_ONE:
-            return {...state,chargementUpdate: true};
-        case Action.TodoActionTypes.ADD_ONE_SUCCESS:
-            return {...state,chargementUpdate: false};
-
-        // DEFAUT
-        default:
-            return state;
+        case TypesActionsTodos.ADD_ONE:                 return {...state, chargement: true};
+        case TypesActionsTodos.ADD_ONE_SUCCESS:         return todoAdapter.addOne(action.todo, {...state, chargement: true});
+        default:                                        return state;
     }
 }
 
 // Récupération d'éléments du state
-export const getTodoSelectionne = (state: TodoState = initialState) => {    
-    return state.todoSelectionne;};
-
-export const getChargementUpdate = (state: TodoState) => {    
-    return state.chargementUpdate;};
-
-export const getChargementListe = (state: TodoState) => {    
-    return state.chargementListe;};
+export const getTodoSelectionne = (state: TodoState = initialState) => { return state.todoSelectionne;};
+export const getChargement = (state: TodoState) => { return state.chargement;};
 
 // Sélecteurs issus de l'adapteur
-const {
-    selectAll, 
-    selectIds, 
-    selectEntities
-} = todoAdapter.getSelectors();
+const {selectAll, selectIds, selectEntities} = todoAdapter.getSelectors();
 
 export const selectTodos = selectAll;
 export const selectIdsTodos = selectIds;

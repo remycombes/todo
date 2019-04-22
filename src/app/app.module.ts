@@ -24,11 +24,11 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule, 
     BrowserAnimationsModule, 
     CoreModule, 
-    AppRoutingModule, 
-    TodosModule, 
+    AppRoutingModule,     
     SharedModule, 
     StoreModule.forRoot(appReducers), 
-    EffectsModule.forRoot([TodosEffects])
+    EffectsModule.forRoot([TodosEffects]), 
+    TodosModule
   ],
   providers: [],
   bootstrap: [AppComponent]
